@@ -1,0 +1,8 @@
+ta/*
+!ta/aes_ta.c
+!ta/aes_ta.h
+!ta/Makefile
+!ta/sub.mk
+!ta/user_ta_header_defines.h
+
+normal/aes_test

@@ -1,0 +1,10 @@
+CFG_TEE_TA_LOG_LEVEL ?= 4
+CFG_TA_OPTEE_CORE_API_COMPAT_1_1=y
+CFG_RPMB_FS=y
+
+BINARY=11111111-1111-1111-1111-111111111111
+
+-include /home/iscmyoo/project/mobility_security/optee_qemu/optee_os/out/arm/export-ta_arm32/mk/ta_dev_kit.mk
+
+addclean:
+	@rm -f *.o *.cmd *.d *.map *.dmp *.stripped.elf *.elf *.ta *.ld.d
