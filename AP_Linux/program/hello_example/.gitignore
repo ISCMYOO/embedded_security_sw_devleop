@@ -1,0 +1,7 @@
+ta/*
+!ta/Makefile
+!ta/sub.mk
+!ta/ta.c
+!ta/user_ta_header_defines.h
+
+normal/main
