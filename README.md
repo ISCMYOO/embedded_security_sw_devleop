@@ -1,4 +1,4 @@
-# 임베디드 보안 SW 개발 (AP Linux, HSM, MACSec, SecOC)
+# 임베디드 보안 SW 개발 (AP ECU, HSM, MACSec, SecOC)
 
 ## 참고자료 (Notion)
 [임베디드 보안 SW 개발](https://iscmyoo.notion.site/SW-AP-Linux-HSM-MACsec-SecOC-2efa05c043f7803e94faf355f9db0a44)
