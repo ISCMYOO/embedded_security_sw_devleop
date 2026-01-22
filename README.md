@@ -9,21 +9,17 @@
 
 ### ⚙ 기술 스택
 #### 🖥 AP
-<img alt="C" src ="https://img.shields.io/badge/C-A8B9CC.svg?&style=for-the-badge&logo=C&logoColor=white"/><img alt="ARM" src ="https://img.shields.io/badge/arm-%230091BD.svg?style=for-the-badge&logo=arm&logoColor=white"/><img alt="QEMU" src ="https://img.shields.io/badge/qemu-qemu.svg?style=for-the-badge&logo=qemu&logoColor=white"/><img alt="Yocto" src ="https://img.shields.io/badge/Yocto-7289DA.svg?style=for-the-badge&logo=yocto&logoColor=white"/><img alt="PWNGDB" src ="https://img.shields.io/badge/PwnGDB-41454A.svg?style=for-the-badge&logo=gdb&logoColor=white"/>
-<img alt="STMicroelectronics" src ="https://img.shields.io/badge/STMicroelectronics-03234B.svg?style=for-the-badge&logo=stm&logoColor=white"/><img alt="OP-TEE" src ="https://img.shields.io/badge/OP_TEE-FF1B2D.svg?style=for-the-badge&logo=tee&logoColor=white"/><img alt="Linux" src ="https://img.shields.io/badge/Linux-FCC624.svg?style=for-the-badge&logo=linux&logoColor=black"/>
+<img alt="C" src ="https://img.shields.io/badge/C-A8B9CC.svg?&style=for-the-badge&logo=C&logoColor=white"/><img alt="ARM" src ="https://img.shields.io/badge/arm-%230091BD.svg?style=for-the-badge&logo=arm&logoColor=white"/><img alt="QEMU" src ="https://img.shields.io/badge/qemu-qemu.svg?style=for-the-badge&logo=qemu&logoColor=white"/><img alt="Yocto" src ="https://img.shields.io/badge/Yocto-7289DA.svg?style=for-the-badge&logo=yocto&logoColor=white"/><img alt="PWNGDB" src ="https://img.shields.io/badge/PwnGDB-41454A.svg?style=for-the-badge&logo=gdb&logoColor=white"/><img alt="STMicroelectronics" src ="https://img.shields.io/badge/STMicroelectronics-03234B.svg?style=for-the-badge&logo=stm&logoColor=white"/><img alt="OP-TEE" src ="https://img.shields.io/badge/OP_TEE-FF1B2D.svg?style=for-the-badge&logo=tee&logoColor=white"/><img alt="Linux" src ="https://img.shields.io/badge/Linux-FCC624.svg?style=for-the-badge&logo=linux&logoColor=black"/>
 
 #### 🖥️ ECU
-<img alt="C" src ="https://img.shields.io/badge/C-A8B9CC.svg?&style=for-the-badge&logo=C&logoColor=white"/>
-<img alt="Raspberrypi" src ="https://img.shields.io/badge/
+<img alt="C" src ="https://img.shields.io/badge/C-A8B9CC.svg?&style=for-the-badge&logo=C&logoColor=white"/><img alt="Raspberrypi" src ="https://img.shields.io/badge/
 -Raspberry_Pi-C51A4A?style=for-the-badge&logo=Raspberry-Pi"/>
 
 #### ⚙️ HSM
-<img alt="C" src ="https://img.shields.io/badge/C-A8B9CC.svg?&style=for-the-badge&logo=C&logoColor=white"/>
-<img alt="STMicroelectronics" src ="https://img.shields.io/badge/STMicroelectronics-03234B.svg?style=for-the-badge&logo=stm&logoColor=white"/>
+<img alt="C" src ="https://img.shields.io/badge/C-A8B9CC.svg?&style=for-the-badge&logo=C&logoColor=white"/><img alt="STMicroelectronics" src ="https://img.shields.io/badge/STMicroelectronics-03234B.svg?style=for-the-badge&logo=stm&logoColor=white"/>
 
 #### 📄 내용 정리
-<img alt="GITHUB" src ="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"/>
-<img alt="Notion" src ="https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white"/>
+<img alt="GITHUB" src ="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"/><img alt="Notion" src ="https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white"/>
 
 ### 서비스 구조
 <img width="1338" height="630" alt="Image" src="https://github.com/user-attachments/assets/ee0cbfbf-718d-430f-96d7-5001c87be629" />
@@ -31,12 +27,12 @@
 ### 개발 보드
 #### 🖥 AP
 ##### STM32MP15D DK1
-![Image](https://github.com/user-attachments/assets/54b9a3fe-5973-465c-ae73-14cdcd2b911d)
+<img width="500" height="630" alt="Image" src = "https://github.com/user-attachments/assets/54b9a3fe-5973-465c-ae73-14cdcd2b911d">
 
 #### 🖥️ ECU
 ##### Raspberrypi4
-![Image](https://github.com/user-attachments/assets/3240b77a-616f-4959-a5d2-08fe968432e5)
+<img width="500" height="630" alt="Image" src = "https://github.com/user-attachments/assets/3240b77a-616f-4959-a5d2-08fe968432e5">
 
 #### ⚙️ HSM
 ##### NUCLEO-144 STM32L4R5ZI
-![Image](https://github.com/user-attachments/assets/3390f886-6906-44dd-8fc2-d8cde86016e2)
+<img width="500" height="630" alt="Image" src = "https://github.com/user-attachments/assets/3390f886-6906-44dd-8fc2-d8cde86016e2">
