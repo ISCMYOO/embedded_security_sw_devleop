@@ -21,11 +21,11 @@
 <img alt="GITHUB" src ="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"/><img alt="Notion" src ="https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white"/>
 
 ### 서비스 구조
-<img width="1338" height="630" alt="Image" src="https://github.com/user-attachments/assets/476bf699-598b-471d-a90a-2f64b1a52cda" />
+<img width="1338" height="630" alt="Image" src="https://github.com/user-attachments/assets/9047abfc-e9a1-430c-88b1-5310655adfe3" />
 
 ### 개발 보드
 #### 🖥 AP ECU
-##### STM32MP15D DK1
+##### STM32MP157D-DK1
 <img width="250" height="210" src = "https://github.com/user-attachments/assets/54b9a3fe-5973-465c-ae73-14cdcd2b911d">
 
 #### 🖥️ ECU
