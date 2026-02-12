@@ -26,7 +26,7 @@ void secoc_store_freshness(uint32_t freshness){
 	fclose(f);
 }
 
-int secoc_protect(secoc_pdu_t* pdu){
+void secoc_protect(secoc_pdu_t* pdu){
 	uint32_t freshness;
 
 	// get freshness and add 1
@@ -39,8 +39,6 @@ int secoc_protect(secoc_pdu_t* pdu){
 	memset(pdu->mac, 0xAA, SECOC_MAC_SIZE);
 
 	secoc_store_freshness(freshness);
-
-	return 0;
 }
 
 void secoc_replay(secoc_pdu_t* pdu){

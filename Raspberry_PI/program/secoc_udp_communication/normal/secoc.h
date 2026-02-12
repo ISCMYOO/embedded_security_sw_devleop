@@ -17,6 +17,6 @@ void secoc_store_freshness(uint32_t freshness);
 
 void secoc_init_freshness();
 
-int secoc_protect(secoc_pdu_t* pdu);
+void secoc_protect(secoc_pdu_t* pdu);
 
 void secoc_replay(secoc_pdu_t* pdu);
