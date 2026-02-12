@@ -62,7 +62,7 @@ TEE_Result loadKey(const char* alias, unsigned char* key)
 	TEE_ObjectInfo objectInfo;
 	res = TEE_GetObjectInfo1(object, &objectInfo);
 	if (res != TEE_SUCCESS)
-	 {
+	{
 		EMSG("TEE_GetObjectInfo1 failed 0x%08x", res);
 		goto EXIT_ERROR;
 	}
