@@ -30,7 +30,7 @@ void send_secoc_udp_message(uint8_t service){
         if(sock == -1)  return;
 
         set_udp_send_conf(&receiver_addr);
-        if(service != 1 && service != 5){
+        if(service != 1 && service != 4){
                 printf("input value : ");
                 fgets(buf, MAX_PAYLOAD, stdin);
         }
@@ -43,7 +43,9 @@ void send_secoc_udp_message(uint8_t service){
         secoc_protect(&pdu);
 
         sendto(sock, &pdu, sizeof(uint32_t) + sizeof(uint8_t) + sizeof(uint16_t) + pdu.payload_len + SECOC_MAC_SIZE, 0, (struct sockaddr*)&receiver_addr, sizeof(receiver_addr));
-        printf("[Sender] Sent: %s\n", buf);
+        if(service != 1 && service != 4){
+                printf("[Sender] Sent: %s\n", buf);
+        }
 
         close(sock);
 }

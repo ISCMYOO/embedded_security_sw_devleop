@@ -21,24 +21,23 @@ int main(){
 		printf("\n");
 
 		if(menu_num == 1){ // freshness init
+			send_secoc_udp_message(menu_num);
 			secoc_store_freshness(0);
 			printf("reset freshness 0\n");
-
-			send_secoc_udp_message(menu_num);
 		}else if(menu_num == 2){ // send message
 			send_secoc_udp_message(menu_num);
 			printf("\n\n");
 		}else if(menu_num == 3){ // do replay attack
 			send_secoc_udp_replay();
 		}else if(menu_num == 4){ // read freshness
+			send_secoc_udp_message(menu_num);
 			int freshness = secoc_load_freshness();
 			printf("now freshness : %d\n", freshness);
 		}else if(menu_num == 5){ // set freshness
 			printf("input set freshness : ");
 			int set_freshness = get_number();
-			secoc_store_freshness((uint32_t)set_freshness);
-
 			send_secoc_udp_message(menu_num);
+			secoc_store_freshness((uint32_t)set_freshness);
 		}else if(menu_num == 6){ // Exit
 			return 0;
 		}else{
