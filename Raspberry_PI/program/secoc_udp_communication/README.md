@@ -5,7 +5,7 @@
 
 ## 참고자료
 ### 코드 설명 및 컴파일, 구동 방법 (Notion)
-[UDP_Sender 구현 (to STM32MP157D-DK1)](https://www.notion.so/iscmyoo/UDP_Sender-to-STM32MP157D-DK1-303a05c043f780d5913bd5dabccc21c9?source=copy_link)
+[SecOC의 Freshness Sender 구현 (to STM32MP157D-DK1)](https://www.notion.so/iscmyoo/SecOC-Freshness-Sender-to-STM32MP157D-DK1-305a05c043f780b2bf33c9a19ce23f22?source=copy_link)
 
 ### 수신자 코드
 [SecOC Freshness Receiver](https://github.com/ISCMYOO/embedded_security_sw_devleop/tree/main/AP_ECU/program/secoc_communication)
