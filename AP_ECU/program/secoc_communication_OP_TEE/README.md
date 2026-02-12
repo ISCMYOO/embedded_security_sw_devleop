@@ -1,5 +1,5 @@
 ## SecOC Freshness with OP-TEE 기능 구현 예제 (프로그램)
-해당 코드는 STM32MP157D-DK1과 라즈베리파이간의 SecOC의 Freshness 기능 구현 예제 코드입니다.
+해당 코드는 STM32MP157D-DK1과 라즈베리파이간의 SecOC 통신 중 OP-TEE 환경에서의 Freshness 기능 구현 예제 코드입니다.
 
 기존 Freshness 예제 코드에서 OP-TEE 환경을 고려하여 추가 구현한 예제 코드입니다. ([기존 예제 코드](https://github.com/ISCMYOO/embedded_security_sw_devleop/tree/main/AP_ECU/program/secoc_communication))
 
