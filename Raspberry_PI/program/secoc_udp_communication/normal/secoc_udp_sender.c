@@ -31,7 +31,8 @@ int main(){
 		}else if(menu_num == 3){ // do replay attack
 			send_secoc_udp_replay();
 		}else if(menu_num == 4){ // read freshness
-			secoc_read_freshness();
+			int freshness = secoc_load_freshness();
+			printf("now freshness : %d\n", freshness);
 		}else if(menu_num == 5){ // set freshness
 			printf("input set freshness : ");
 			int set_freshness = get_number();

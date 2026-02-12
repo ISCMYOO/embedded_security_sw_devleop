@@ -26,23 +26,6 @@ void secoc_store_freshness(uint32_t freshness){
 	fclose(f);
 }
 
-uint32_t secoc_read_freshness(){
-	uint32_t freshness;
-
-	FILE *f = fopen("/home/iscmyoo/var/lib/secoc/freshness.bin", "rb");
-	if(!f){
-		printf("create freshness file first\n");
-		return -1;
-	}
-
-	fread(&freshness, sizeof(uint32_t), 1, f);
-	fclose(f);
-
-	printf("now freshness : %d\n", freshness);
-
-	return freshness;
-}
-
 int secoc_protect(secoc_pdu_t* pdu){
 	uint32_t freshness;
 
@@ -63,8 +46,7 @@ int secoc_protect(secoc_pdu_t* pdu){
 void secoc_replay(secoc_pdu_t* pdu){
 	uint32_t freshness, replay_freshness;
 	
-	freshness = secoc_read_freshness();
-
+	freshness = secoc_load_freshness();
 	if(freshness == -1)	return;
 
 	printf("Input replay freshness (0 ~ %d)\n", freshness - 1);
