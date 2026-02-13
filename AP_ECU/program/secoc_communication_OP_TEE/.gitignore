@@ -5,4 +5,4 @@ ta/*
 !ta/sub.mk
 !ta/user_ta_header_defines.h
 
-normal/aes_test
+normal/secoc_udp_receiver_optee
