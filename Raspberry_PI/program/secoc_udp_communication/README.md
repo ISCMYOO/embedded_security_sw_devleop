@@ -15,7 +15,7 @@ touch ./var/lib/secoc/key.bin
 touch ./var/lib/secoc/freshness.bin
 
 # 빌드
-cd ./Raspberry_PI/program/secoc_udp_communication
+cd ./Raspberry_PI/program/secoc_udp_communication/normal
 gcc secoc_udp_sender.c udpcom.c common.c secoc.c -o secoc_udp_sender
 
 # 실행
