@@ -43,4 +43,4 @@ gcc secoc_udp_sender.c udpcom.c common.c secoc.c -o secoc_udp_sender
 [SecOC의 AuthTag(MAC) Sender 구현 (to STM32MP157D-DK1)](https://www.notion.so/iscmyoo/SecOC-AuthTag-MAC-to-STM32MP157D-DK1-30da05c043f78009b42dc3ea11d70a01?source=copy_link)
 
 ### 수신자 코드 (Github)
-[secoc_udp_receiver](https://github.com/ISCMYOO/embedded_security_sw_devleop/tree/main/AP_ECU/program/secoc_communication)
+[secoc_udp_receiver_optee](https://github.com/ISCMYOO/embedded_security_sw_devleop/tree/main/AP_ECU/program/OPTEE/secoc_authtag)
