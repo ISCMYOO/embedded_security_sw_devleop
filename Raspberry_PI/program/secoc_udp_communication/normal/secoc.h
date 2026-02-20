@@ -11,12 +11,19 @@ typedef struct {
     uint8_t mac[SECOC_MAC_SIZE];
 } secoc_pdu_t;
 
-uint32_t secoc_load_freshness();
+typedef struct{
+	uint8_t key[KEY_SIZE];
+	uint32_t freshness;
+} secoc_ctx;
 
-void secoc_store_freshness(uint32_t freshness);
+int secoc_load_freshness(secoc_ctx* secoc_obj);
 
-void secoc_init_freshness();
+int secoc_store_freshness(secoc_ctx* secoc_obj);
 
-void secoc_protect(secoc_pdu_t* pdu);
+int secoc_load_key(secoc_ctx* secoc_obj);
 
-void secoc_replay(secoc_pdu_t* pdu);
+int secoc_gen_key(secoc_ctx* secoc_obj);
+
+void secoc_protect(secoc_ctx* secoc_obj, secoc_pdu_t* pdu);
+
+void secoc_replay(secoc_ctx* secoc_obj, secoc_pdu_t* pdu);
