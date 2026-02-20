@@ -1,7 +1,7 @@
 #include "secoc.h"
 
 int secoc_load_freshness(secoc_ctx* secoc_obj){
-	FILE *f = fopen("/home/iscmyoo/var/lib/secoc/freshness.bin", "rb");
+	FILE *f = fopen("./var/lib/secoc/freshness.bin", "rb");
 	if(!f){
 		printf("create freshness file first\n");
 		return -1;
@@ -14,7 +14,7 @@ int secoc_load_freshness(secoc_ctx* secoc_obj){
 }
 
 int secoc_store_freshness(secoc_ctx* secoc_obj){
-	FILE *f = fopen("/home/iscmyoo/var/lib/secoc/freshness.bin", "wb");
+	FILE *f = fopen("./var/lib/secoc/freshness.bin", "wb");
 	if(!f){
 		printf("create freshness file first\n");
 		return -1;
@@ -27,7 +27,7 @@ int secoc_store_freshness(secoc_ctx* secoc_obj){
 }
 
 int secoc_load_key(secoc_ctx* secoc_obj){
-	FILE *f = fopen("/home/iscmyoo/var/lib/secoc/key.bin", "rb");
+	FILE *f = fopen("./var/lib/secoc/key.bin", "rb");
 	if(!f){
 		printf("create key file first\n");
 		return -1;
@@ -45,7 +45,7 @@ int secoc_load_key(secoc_ctx* secoc_obj){
 }
 
 int secoc_store_key(secoc_ctx* secoc_obj){
-	FILE *f = fopen("/home/iscmyoo/var/lib/secoc/key.bin", "wb");
+	FILE *f = fopen("./var/lib/secoc/key.bin", "wb");
 	if(!f){
 		printf("create key file first\n");
 		return -1;

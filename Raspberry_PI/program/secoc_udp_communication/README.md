@@ -5,8 +5,9 @@
 
 ## 빌드
 ```
-# 소스코드 다운
+# 소스코드 다운 및 이동
 git clone https://github.com/ISCMYOO/embedded_security_sw_devleop.git
+cd ./Raspberry_PI/program/secoc_udp_communication/normal
 
 # 필수 파일 생성
 mkdir -p ./var/lib/secoc
@@ -15,7 +16,6 @@ touch ./var/lib/secoc/key.bin
 touch ./var/lib/secoc/freshness.bin
 
 # 빌드
-cd ./Raspberry_PI/program/secoc_udp_communication/normal
 gcc secoc_udp_sender.c udpcom.c common.c secoc.c -o secoc_udp_sender
 
 # 실행
