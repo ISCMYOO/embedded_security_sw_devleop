@@ -1,0 +1,1 @@
+srcs-y += secoc_udp_communication_ta.c

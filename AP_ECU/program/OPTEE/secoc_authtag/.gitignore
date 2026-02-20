@@ -1,0 +1,8 @@
+ta/*
+!ta/secoc_udp_communication_ta.c
+!ta/secoc_udp_communication_ta.h
+!ta/Makefile
+!ta/sub.mk
+!ta/user_ta_header_defines.h
+
+normal/secoc_udp_receiver_optee
