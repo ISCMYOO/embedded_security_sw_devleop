@@ -7,13 +7,13 @@
 
 #define KEY_SIZE    16
 
-typedef struct {
+typedef struct __attribute__((packed)){
     uint8_t key[KEY_SIZE];
     uint32_t freshness;
 } ta_ctx_t;
 
-bool save_Freshness(const char* alias, const uint32_t freshness);
+TEE_Result save_Freshness(const char* alias, const ta_ctx_t* ctx_obj);
 
-TEE_Result load_Freshness(const char* alias, uint32_t* freshness);
+TEE_Result load_Freshness(const char* alias, ta_ctx_t* ctx_obj);
 
 TEE_Result delete_Freshness(const char* alias);
