@@ -1,4 +1,4 @@
-## SecOC freshness and authtag(mac) with OP-TEE 기능 구현 예제 (프로그램)
+## SecOC freshness and authtag(MAC) with OP-TEE 기능 구현 예제 (프로그램)
 해당 코드는 STM32MP157D-DK1과 라즈베리파이간의 SecOC 통신 중 OP-TEE 환경에서의 Freshness와 AuthTag(MAC) 기능 구현 예제 코드입니다.
 
 기존 OP_TEE 환경에서의 Freshness 예제 코드에서 AuthTag(MAC) 기능을 추가 구현한 예제 코드입니다. ([기존 예제 코드](https://github.com/ISCMYOO/embedded_security_sw_devleop/tree/main/AP_ECU/program/OPTEE/secoc_freshness))

@@ -8,7 +8,7 @@
 
 ## 참고자료
 ### 코드 설명 및 컴파일, 구동 방법 (Notion)
-[SecOC의 OP-TEE Freshness 구현 (to 라즈베리파이) ](https://www.notion.so/iscmyoo/SecOC-OP-TEE-Freshness-to-305a05c043f7807e8006cd82da11f3ac?v=2efa05c043f780a1bcf3000ccd297f53&source=copy_link)
+[SecOC의 OP-TEE Freshness 구현 (to 라즈베리파이)](https://www.notion.so/iscmyoo/SecOC-OP-TEE-Freshness-to-305a05c043f7807e8006cd82da11f3ac?v=2efa05c043f780a1bcf3000ccd297f53&source=copy_link)
 
 ### 수신자 코드 (Github)
 [secoc_udp_sender](https://github.com/ISCMYOO/embedded_security_sw_devleop/tree/main/Raspberry_PI/program/secoc_udp_communication)
