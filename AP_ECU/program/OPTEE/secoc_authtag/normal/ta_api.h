@@ -26,8 +26,6 @@ int store_key(TeeSecOC* secoc_obj, const char* alias, const uint8_t key[KEY_SIZE
 
 int loadOrInitKey(TeeSecOC* secoc_obj, const char* alias);
 
-
-
-int generate_aes_cmac(TeeSecOC* secoc_obj, const char* alias);
+int gen_aes_mac(TeeSecOC* secoc_obj, TEEC_SharedMemory* in, const char* alias, uint8_t aes_cmac[CMAC_SIZE]);
 
 #endif

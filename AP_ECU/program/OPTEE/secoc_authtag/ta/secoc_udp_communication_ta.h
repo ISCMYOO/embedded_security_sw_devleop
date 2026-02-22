@@ -8,12 +8,19 @@
 typedef struct __attribute__((packed)){
     uint8_t key[KEY_SIZE];
     uint32_t freshness;
-} ta_ctx_t;
+} ta_persis_t;
 
-void logHex(const uint8_t *hex, size_t size);
+typedef struct __attribute__((packed)){
+    ta_persis_t persist;
+    bool data_loaded;
+} ta_ctx_t;
 
 TEE_Result save_obj(const char* alias, const ta_ctx_t* ctx_obj);
 
 TEE_Result load_obj(const char* alias, ta_ctx_t* ctx_obj);
 
-TEE_Result delete_obj(const char* alias);
+TEE_Result delete_obj(const char* alias, ta_ctx_t* ctx_obj);
+
+bool setOperation(TEE_OperationHandle* opHandle, TEE_OperationMode opMode, const uint8_t* key);
+
+bool gen_aes_mac(TEE_Param params[4], TEE_OperationHandle op);

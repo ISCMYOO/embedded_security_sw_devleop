@@ -70,6 +70,8 @@ int main(){
                     secoc_load_key(&secoc_obj, alias);
                 }else if(pdu->service == 7 || pdu->service == 8){ // Sync Key
                     secoc_store_key(&secoc_obj, alias, pdu->payload, pdu->payload_len);
+                }else if(pdu->service == 9){
+                    secoc_gen_aes_mac(&secoc_obj, pdu, alias);
                 }else{
                     printf("Not Supported Service\n");
                     printf("Please Check Service Number\n");

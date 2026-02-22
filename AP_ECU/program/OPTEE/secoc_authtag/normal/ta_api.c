@@ -139,23 +139,25 @@ int loadOrInitKey(TeeSecOC* secoc_obj, const char* alias){
     return 0;
 }
 
+int gen_aes_mac(TeeSecOC* secoc_obj, TEEC_SharedMemory* in, const char* alias, uint8_t aes_cmac[CMAC_SIZE]){
+    TEEC_Result res;
+    TEEC_Operation op = {0};
 
+    op.paramTypes = TEEC_PARAM_TYPES(TEEC_MEMREF_WHOLE, TEEC_MEMREF_TEMP_INPUT, TEEC_MEMREF_TEMP_OUTPUT, TEEC_NONE);
+    op.params[0].memref.parent = in;
+    op.params[1].tmpref.buffer = (void*)alias;
+    op.params[1].tmpref.size = strlen(alias);
+    op.params[2].tmpref.buffer = aes_cmac;
+    op.params[2].tmpref.size = CMAC_SIZE;
 
-// int generate_aes_cmac(TeeSecOC* secoc_obj, const char* alias, uint8_t aes_cmac[CMAC_SIZE]){
-//     TEEC_Result res;
-//     TEEC_Operation op = {0};
+    uint32_t origin;
 
-//     op.paramTypes = TEEC_PARAM_TYPES(TEEC_MEMREF_TEMP_INPUT, TEEC_MEMREF_TEMP_OUTPUT, TEEC_NONE, TEEC_NONE);
-//     op.params[0].tmpref.buffer = (void*)alias;
-//     op.params[0].tmpref.size = strlen(alias);
-//     op.parmas[0]
+    res = TEEC_InvokeCommand(&(secoc_obj->session), TA_GENERATE_AES_CMAC, &op, &origin);
 
-//     uint32_t origin;
-//     res = TEEC_InvokeCommand(&(secoc_obj->session), TA_GENERATE_MAC, &op, &origin);
-//     if(res != TEEC_SUCCESS){
-//         printf("generate_mac : TEEC_InvokeCommand failed 0x%x origin 0x%x\n", res, origin);
-//         return -1;
-//     }
+    if(res != TEEC_SUCCESS){
+        printf("TEEC_InvokeCommand failed 0x%08x\n", res);
+        return -1;
+    }
 
-//     return 0;
-// }
+    return 0;
+}

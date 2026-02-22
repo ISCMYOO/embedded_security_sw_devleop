@@ -1,14 +1,5 @@
 #include "secoc_udp_communication_ta.h"
 
-void logHex(const uint8_t *hex, size_t size)
-{
-    for (size_t i = 0; i < size; i++) {
-        printf("%02X ", hex[i]);
-        if ((i + 1) % 16 == 0) printf("\n");
-    }
-    if (size % 16 != 0) printf("\n");
-}
-
 
 TEE_Result TA_CreateEntryPoint(void){
     return TEE_SUCCESS;
@@ -22,6 +13,7 @@ TEE_Result TA_OpenSessionEntryPoint(uint32_t __unused paramTypes, TEE_Param __un
         return TEE_ERROR_OUT_OF_MEMORY;
     
     TEE_MemFill(ctx, 0, sizeof(ta_ctx_t));
+    ctx->data_loaded = false;
 
     *sess_ctx = ctx;
     return TEE_SUCCESS;
@@ -41,7 +33,7 @@ TEE_Result save_obj(const char* alias, const ta_ctx_t* ctx_obj){
     if(res != TEE_SUCCESS)
         goto EXIT_ERROR;
 
-    res = TEE_WriteObjectData(object, ctx_obj, sizeof(ta_ctx_t));
+    res = TEE_WriteObjectData(object, &(ctx_obj->persist), sizeof(ta_persis_t));
     if(res != TEE_SUCCESS)
         goto EXIT_ERROR;
 
@@ -71,11 +63,12 @@ TEE_Result load_obj(const char* alias, ta_ctx_t* ctx_obj){
         goto EXIT_ERROR;
 
     uint32_t readBytes;
-    res = TEE_ReadObjectData(object, ctx_obj, objectInfo.dataSize, &readBytes);
+    res = TEE_ReadObjectData(object, &(ctx_obj->persist), objectInfo.dataSize, &readBytes);
     if(res != TEE_SUCCESS)
         goto EXIT_ERROR;
     
     IMSG("Load obj alias : %s", alias);
+    ctx_obj->data_loaded = true;
     
     TEE_CloseObject(object);
     return res;
@@ -87,7 +80,7 @@ EXIT_ERROR:
     return res;
 }
 
-TEE_Result delete_obj(const char* alias){
+TEE_Result delete_obj(const char* alias, ta_ctx_t* ctx_obj){
     TEE_ObjectHandle object = TEE_HANDLE_NULL;
     TEE_Result res = TEE_OpenPersistentObject(TEE_STORAGE_PRIVATE, alias, strlen(alias),
                         TEE_DATA_FLAG_ACCESS_READ | TEE_DATA_FLAG_ACCESS_WRITE_META,
@@ -96,6 +89,9 @@ TEE_Result delete_obj(const char* alias){
     if(res != TEE_SUCCESS)
         goto EXIT_ERROR;
     
+    TEE_MemFill(ctx_obj, 0, sizeof(ta_ctx_t));
+    ctx_obj->data_loaded = false;
+
     TEE_CloseAndDeletePersistentObject(object);
 
     IMSG("Delete alias : %s", alias);
@@ -108,6 +104,63 @@ EXIT_ERROR:
     return res;
 }
 
+bool setOperation(TEE_OperationHandle* opHandle, TEE_OperationMode opMode, const uint8_t* key){
+    TEE_Result res;
+    bool result = false;
+    TEE_ObjectHandle keyHandle = TEE_HANDLE_NULL;
+    TEE_Attribute attr;
+
+    res = TEE_AllocateOperation(opHandle, TEE_ALG_AES_CMAC, opMode, KEY_SIZE * 8);
+    if(res != TEE_SUCCESS){
+        EMSG("TEE_AllocateOperation failed 0x%08x", res);
+        return result;
+    }
+
+    res = TEE_AllocateTransientObject(TEE_TYPE_AES, KEY_SIZE * 8, &keyHandle);
+    if(res != TEE_SUCCESS){
+        EMSG("TEE_AllocateTransientObject failed 0x%08x", res);
+        goto EXIT_ERROR;
+    }
+
+    TEE_InitRefAttribute(&attr, TEE_ATTR_SECRET_VALUE, key, KEY_SIZE);
+
+    res = TEE_PopulateTransientObject(keyHandle, &attr, 1);
+    if(res != TEE_SUCCESS){
+        EMSG("TEE_PopulateTransientObject failed 0x%08x", res);
+        goto EXIT_ERROR;
+    }
+
+    res = TEE_SetOperationKey(*opHandle, keyHandle);
+    if(res != TEE_SUCCESS){
+        EMSG("TEE_SetOperationKey failed 0x%08x", res);
+        goto EXIT_ERROR;
+    }
+    result = true;
+
+EXIT_ERROR:
+    if(keyHandle != TEE_HANDLE_NULL)
+        TEE_FreeTransientObject(keyHandle);
+    
+    return result;
+}
+
+bool gen_aes_mac(TEE_Param params[4], TEE_OperationHandle op){
+    TEE_Result res;
+
+    MacParams* tmp_params = (MacParams*)params[0].memref.buffer;
+    
+    TEE_MACInit(op, NULL, 0);
+    TEE_MACUpdate(op, tmp_params->buffer, tmp_params->buffer_len);
+    res = TEE_MACComputeFinal(op, NULL, 0, params[2].memref.buffer, &params[2].memref.size);
+
+    if(res != TEE_SUCCESS){
+        EMSG("TEE_MACComputeFinal failed 0x%08x", res);
+        return false;
+    }
+
+    return true;
+}
+
 TEE_Result TA_InvokeCommandEntryPoint(void *sess_ctx, uint32_t commandID, uint32_t __maybe_unused paramTypes, TEE_Param params[4]){
     ta_ctx_t* ctx = (ta_ctx_t*)sess_ctx;
 
@@ -117,15 +170,15 @@ TEE_Result TA_InvokeCommandEntryPoint(void *sess_ctx, uint32_t commandID, uint32
         alias[params[0].memref.size] = '\0';
 
         uint32_t freshness = params[1].value.a;
-        uint32_t freshness_tmp = ctx->freshness;
+        uint32_t freshness_tmp = ctx->persist.freshness;
 
-        ctx->freshness = freshness;
+        ctx->persist.freshness = freshness;
 
         TEE_Result res = save_obj(alias, ctx);
         TEE_Free(alias);
 
         if(res != TEE_SUCCESS)
-            ctx->freshness = freshness_tmp;
+            ctx->persist.freshness = freshness_tmp;
         
         return res;
     }else if(commandID == TA_LOAD_FRESHNESS){
@@ -139,7 +192,7 @@ TEE_Result TA_InvokeCommandEntryPoint(void *sess_ctx, uint32_t commandID, uint32
         if(res != TEE_SUCCESS)
             params[1].value.a = 0;
         else
-            params[1].value.a = ctx->freshness;
+            params[1].value.a = ctx->persist.freshness;
         params[1].value.b = 0;
         
         return res;
@@ -148,7 +201,7 @@ TEE_Result TA_InvokeCommandEntryPoint(void *sess_ctx, uint32_t commandID, uint32
         TEE_MemMove(alias, params[0].memref.buffer, params[0].memref.size);
         alias[params[0].memref.size] = '\0';
 
-        TEE_Result res = delete_obj(alias);
+        TEE_Result res = delete_obj(alias, ctx);
         TEE_Free(alias);
 
         return res;
@@ -162,7 +215,7 @@ TEE_Result TA_InvokeCommandEntryPoint(void *sess_ctx, uint32_t commandID, uint32
 
         if(res == TEE_SUCCESS){
             printf("Save Key Value : ");
-            logHex(ctx->key, KEY_SIZE);
+            logHex(ctx->persist.key, KEY_SIZE);
         }
 
         return res;
@@ -172,33 +225,54 @@ TEE_Result TA_InvokeCommandEntryPoint(void *sess_ctx, uint32_t commandID, uint32
         alias[params[0].memref.size] = '\0';
 
         uint8_t tmp_key[KEY_SIZE];
-        TEE_MemMove(tmp_key, ctx->key, KEY_SIZE);
+        TEE_MemMove(tmp_key, ctx->persist.key, KEY_SIZE);
         
-        TEE_MemMove(ctx->key, params[1].memref.buffer, KEY_SIZE);
+        TEE_MemMove(ctx->persist.key, params[1].memref.buffer, KEY_SIZE);
 
         TEE_Result res = save_obj(alias, ctx);
         TEE_Free(alias);
 
         if(res != TEE_SUCCESS)
-            TEE_MemMove(ctx->key, tmp_key, KEY_SIZE);
+            TEE_MemMove(ctx->persist.key, tmp_key, KEY_SIZE);
         else{
             printf("Save Key Value : ");
-            logHex(ctx->key, KEY_SIZE);
+            logHex(ctx->persist.key, KEY_SIZE);
         }
 
         return res;
+    }else if(commandID == TA_GENERATE_AES_CMAC){
+        TEE_OperationHandle opHandle = TEE_HANDLE_NULL;
+        TEE_Result res;
+        bool result;
+
+        char* alias = TEE_Malloc(params[1].memref.size + 1, 0);
+        TEE_MemMove(alias, params[1].memref.buffer, params[1].memref.size);
+        alias[params[1].memref.size] = '\0';
+
+        if(ctx->data_loaded){
+            res = load_obj(alias, ctx);
+            if(res != TEE_SUCCESS){
+                return res;
+            }
+        }
+
+        result = setOperation(&opHandle, TEE_MODE_MAC, ctx->persist.key);
+        if(!result){
+            if(opHandle != TEE_HANDLE_NULL)
+                TEE_FreeOperation(opHandle);
+            return TEE_ERROR_GENERIC;
+        }
+
+        result = gen_aes_mac(params, opHandle);
+        if(!result){
+            if(opHandle != TEE_HANDLE_NULL)
+                TEE_FreeOperation(opHandle);
+            return TEE_ERROR_GENERIC;
+        }
+
+        TEE_FreeOperation(opHandle);
+        return TEE_SUCCESS;
     }
-    
-    // else if(commandID == TA_GENERATE_AES_CMAC){
-    //     char* alias = TEE_Malloc(params[0].memref.size + 1, 0);
-    //     TEE_MemMove(alias, params[0].memref.buffer, params[0].memref.size);
-    //     alias[params[0].memref.size] = '\0';
-
-    //     TEE_Result res = load_key(alias, ctx);
-
-    //     // TEE_Result res = generate_Aes_Mac(alias, params[1]);
-    //     // TEE
-    // }
 
     return TEE_ERROR_BAD_PARAMETERS;
 }

@@ -5,4 +5,8 @@ ta/*
 !ta/sub.mk
 !ta/user_ta_header_defines.h
 
+include/*
+!include/common.h
+!include/common.c
+
 normal/secoc_udp_receiver_optee
