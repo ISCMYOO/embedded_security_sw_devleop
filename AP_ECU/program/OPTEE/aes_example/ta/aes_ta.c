@@ -125,7 +125,8 @@ bool setOperation(TEE_OperationHandle* opHandle, unsigned char* key, TEE_Operati
 	success = true;
 
 EXIT_ERROR:
-	TEE_FreeTransientObject(keyHandle);
+	if(keyHandel != TEE_HANDLE_NULL)	
+		TEE_FreeTransientObject(keyHandle);
 
 	return success;
 }
