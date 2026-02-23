@@ -139,7 +139,7 @@ int loadOrInitKey(TeeSecOC* secoc_obj, const char* alias){
     return 0;
 }
 
-int gen_aes_mac(TeeSecOC* secoc_obj, TEEC_SharedMemory* in, const char* alias, uint8_t aes_cmac[CMAC_SIZE]){
+int gen_aes_mac(TeeSecOC* secoc_obj, TEEC_SharedMemory* in, const char* alias, uint8_t aes_cmac[SECOC_MAC_SIZE]){
     TEEC_Result res;
     TEEC_Operation op = {0};
 
@@ -148,7 +148,7 @@ int gen_aes_mac(TeeSecOC* secoc_obj, TEEC_SharedMemory* in, const char* alias, u
     op.params[1].tmpref.buffer = (void*)alias;
     op.params[1].tmpref.size = strlen(alias);
     op.params[2].tmpref.buffer = aes_cmac;
-    op.params[2].tmpref.size = CMAC_SIZE;
+    op.params[2].tmpref.size = SECOC_MAC_SIZE;
 
     uint32_t origin;
 

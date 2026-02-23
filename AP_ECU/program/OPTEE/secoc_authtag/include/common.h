@@ -5,7 +5,6 @@
 #include <stddef.h>
 
 #define TA_SECOC_EXAMPLE_UUID { 0x22222222, 0x2222, 0x2222, {0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22} }
-#define CMAC_SIZE               16
 #define KEY_SIZE                16
 #define MAX_PAYLOAD             256
 #define SECOC_MAC_SIZE          16

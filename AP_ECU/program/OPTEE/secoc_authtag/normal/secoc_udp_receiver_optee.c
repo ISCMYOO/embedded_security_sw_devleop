@@ -43,9 +43,11 @@ int main(){
             continue;
         }
 
+        printf("payload len : %d\n", pdu->payload_len);
+        
         if(secoc_verify(&secoc_obj, pdu, alias) == 0){
             if(pdu->payload_len > MAX_PAYLOAD){
-                printf("[DROP] invalid length\n");
+                printf("[DROP] invalid length : %d\n", pdu->payload_len);
             }else{
                 printf("[SecOC OK]\n");
                 if(pdu->service == 2){ // Receive Message

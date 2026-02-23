@@ -9,7 +9,7 @@ int secoc_verify(TeeSecOC* secoc_obj, secoc_pdu_t* pdu, const char* alias){
     }
 
     // MAC 검증
-    // uint8_t aes_cmac[CMAC_SIZE];
+    // uint8_t aes_cmac[SECOC_MAC_SIZE];
     // generate_aes_cmac(secoc_obj, alias, aes_cmac);
     // secoc_load_key(secoc_obj, alias);
 
@@ -78,7 +78,7 @@ int secoc_delete_object(TeeSecOC* secoc_obj, const char* alias){
 }
 
 int secoc_gen_aes_mac(TeeSecOC* secoc_obj, secoc_pdu_t* pdu, const char* alias){
-    uint8_t aes_cmac[CMAC_SIZE] = {0};
+    uint8_t aes_cmac[SECOC_MAC_SIZE] = {0};
     int result;
     TEEC_Result res;
     TEEC_SharedMemory in;
@@ -108,7 +108,7 @@ int secoc_gen_aes_mac(TeeSecOC* secoc_obj, secoc_pdu_t* pdu, const char* alias){
     TEEC_ReleaseSharedMemory(&in);
 
     printf("MAC : ");
-    logHex(aes_cmac, CMAC_SIZE);
+    logHex(aes_cmac, SECOC_MAC_SIZE);
 
     return result;
 }
