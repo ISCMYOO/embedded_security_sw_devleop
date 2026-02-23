@@ -23,6 +23,7 @@ void send_secoc_udp_message(secoc_ctx* secoc_obj, uint8_t service){
         struct sockaddr_in receiver_addr;
         secoc_pdu_t pdu;
         char buf[MAX_PAYLOAD];
+        uint32_t buf_len = 0;
 
         memset(buf, 0, MAX_PAYLOAD);
 
@@ -30,27 +31,32 @@ void send_secoc_udp_message(secoc_ctx* secoc_obj, uint8_t service){
         if(sock == -1)  return;
 
         set_udp_send_conf(&receiver_addr);
-        if(service == 2 || service == 3 || service == 5){
+        if(service == 2 || service == 3 || service == 5 || service == 9){
                 printf("input value : ");
                 fgets(buf, MAX_PAYLOAD, stdin);
+                if(strlen(buf) == 0)    buf_len = 0;
+                else    buf_len = strlen(buf) - 1;
         }else if(service == 7 || service == 8){
-                memcpy(buf, secoc_obj->key, KEY_SIZE);
+                memcpy(buf, secoc_obj->persist.key, KEY_SIZE);
                 buf[KEY_SIZE] = '\0';
+                buf_len = KEY_SIZE;
         }
 
         memset(&pdu, 0, sizeof(pdu));
-        pdu.payload_len = strlen(buf);
+        pdu.payload_len = buf_len;
         pdu.service = service;
         memcpy(pdu.payload, buf, pdu.payload_len);
 
         secoc_protect(secoc_obj, &pdu);
 
-        sendto(sock, &pdu, sizeof(uint32_t) + sizeof(uint8_t) + sizeof(uint16_t) + pdu.payload_len + SECOC_MAC_SIZE, 0, (struct sockaddr*)&receiver_addr, sizeof(receiver_addr));
+        sendto(sock, &pdu, sizeof(uint32_t) + sizeof(uint8_t) + sizeof(uint32_t) + pdu.payload_len + SECOC_MAC_SIZE, 0, (struct sockaddr*)&receiver_addr, sizeof(receiver_addr));
         if(service == 2 || service == 3){
                 printf("[Sender] Sent: %s\n", buf);
         }else if(service == 5){
-                parse_uint32(buf, &(secoc_obj->freshness));
-                secoc_store_freshness(secoc_obj);
+                parse_uint32(buf, &(secoc_obj->persist.freshness));
+                secoc_store_obj(secoc_obj);
+        }else if(service == 9){
+                secoc_gen_mac(secoc_obj, pdu.payload, pdu.payload_len);
         }
 
         close(sock);

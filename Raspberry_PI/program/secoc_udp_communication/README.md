@@ -9,6 +9,9 @@
 git clone https://github.com/ISCMYOO/embedded_security_sw_devleop.git
 cd ./Raspberry_PI/program/secoc_udp_communication/normal
 
+# OpenSSL 준비
+sudo apt install libssl-dev
+
 # 필수 파일 생성
 mkdir -p ./var/lib/secoc
 
@@ -16,7 +19,7 @@ touch ./var/lib/secoc/key.bin
 touch ./var/lib/secoc/freshness.bin
 
 # 빌드
-gcc secoc_udp_sender.c udpcom.c common.c secoc.c -o secoc_udp_sender
+make
 
 # 실행
 ./secoc_udp_sender
