@@ -2,7 +2,7 @@ CFG_TEE_TA_LOG_LEVEL ?= 4
 CFG_TA_OPTEE_CORE_API_COMPAT_1_1=y
 CFG_RPMB_FS=y
 
-BINARY=22222222-2222-2222-2222-222222222222
+BINARY=33333333-3333-3333-3333-333333333333
 
 LIBGCC_PATH := /home/iscmyoo/project/mobility_security/optee_stm32/Developer_Package/SDK/sysroots/cortexa7t2hf-neon-vfpv4-ostl-linux-gnueabi/usr/lib/arm-ostl-linux-gnueabi/13.3.0/libgcc.a
 
