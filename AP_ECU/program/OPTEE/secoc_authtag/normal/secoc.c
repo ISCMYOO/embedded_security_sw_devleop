@@ -99,10 +99,10 @@ int secoc_gen_aes_mac(TeeSecOC* secoc_obj, secoc_pdu_t* pdu, const char* alias){
 
     // payload || freshness
     mac_params->buffer_len = pdu->payload_len + sizeof(uint32_t);
-    mac_params->buffer[pdu->payload_len] = (pdu->freshness >> 24) & 0xFF;
+    mac_params->buffer[pdu->payload_len]     = (pdu->freshness >> 24) & 0xFF;
     mac_params->buffer[pdu->payload_len + 1] = (pdu->freshness >> 16) & 0xFF;
-    mac_params->buffer[pdu->payload_len + 2] = (pdu->freshness >> 8) & 0xFF;
-    mac_params->buffer[pdu->payload_len + 3] = (pdu->freshness) & 0xFF;
+    mac_params->buffer[pdu->payload_len + 2] = (pdu->freshness >> 8)  & 0xFF;
+    mac_params->buffer[pdu->payload_len + 3] = (pdu->freshness)       & 0xFF;
     
     result = gen_aes_mac(secoc_obj, &in, alias, aes_cmac);
     TEEC_ReleaseSharedMemory(&in);
