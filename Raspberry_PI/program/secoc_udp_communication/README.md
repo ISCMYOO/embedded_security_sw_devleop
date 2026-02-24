@@ -34,9 +34,11 @@ make
 | Replay Packet | Freshness 값을 변조하여 이전 패킷을 재사용 하도록 설정 후 전송 |
 | Read Freshness | 라즈베리파이와 STM32MP157D-DK1에 존재하는 Freshness 값을 읽기 |
 | Set Freshness | 라즈베리파이와 STM32MP157D-DK1의 Freshness을 입력 값으로 설정 |
+| Delete Object | RPMB 혹은 파일에 저장되어 있는 Key 및 Freshness 객체 삭제 |
 | Read Key | 라즈베리파이와 STM32MP157D-DK1에 설정되어 있는 Key 읽기 |
 | Sync Key | STM32MP157D-DK1의 Key 값을 라즈베리파이에서 설정되어 있는 Key 값으로 설정 |
 | Gen & Sync Key | 라즈베리파이에서 Key 값을 랜덤으로 설정 후 STM32MP157D-DK1도 동일하게 설정 | 
+| Gen MAC | 사용자가 입력한 문자열에 대한 고유 MAC 값 생성 |
 
 
 ## 참고자료
