@@ -7,11 +7,12 @@ void print_menu(){
 	printf("3. Replay Packet\n");
 	printf("4. Read Freshness\n");
 	printf("5. Set Freshness\n");
-	printf("6. Read Key\n");
-	printf("7. Sync Key\n");
-	printf("8. Gen & Sync Key\n");
-	printf("9. Gen MAC\n");
-	printf("10. Exit\n");
+	printf("6. Delete Object\n");
+	printf("7. Read Key\n");
+	printf("8. Sync Key\n");
+	printf("9. Gen & Sync Key\n");
+	printf("10. Gen MAC\n");
+	printf("11. Exit\n");
 	printf("> ");
 }
 
@@ -41,18 +42,21 @@ int main(){
 			secoc_read_obj(&secoc_obj);
 		}else if(menu_num == 5){ // set freshness
 			send_secoc_udp_message(&secoc_obj, menu_num);
-		}else if(menu_num == 6){ // read Key
+		}else if(menu_num == 6){
+			send_secoc_udp_message(&secoc_obj, menu_num);
+			secoc_delete_obj(&secoc_obj);
+		}else if(menu_num == 7){ // read Key
 			send_secoc_udp_message(&secoc_obj, menu_num);
 			secoc_read_obj(&secoc_obj);
-		}else if(menu_num == 7){ // Sync Key
+		}else if(menu_num == 8){ // Sync Key
 			if(!secoc_obj.data_loaded && secoc_load_obj(&secoc_obj) == -1)
 				continue;
 			send_secoc_udp_message(&secoc_obj, menu_num);
-		}else if(menu_num == 8){ // Generate and Sync key
+		}else if(menu_num == 9){ // Generate and Sync key
 			if(secoc_gen_key(&secoc_obj) == -1)
 				continue;
 			send_secoc_udp_message(&secoc_obj, menu_num);
-		}else if(menu_num == 9){
+		}else if(menu_num == 10){
 			if(!secoc_obj.data_loaded && secoc_load_obj(&secoc_obj) == -1)
 				continue;
 			send_secoc_udp_message(&secoc_obj, menu_num);

@@ -31,12 +31,12 @@ void send_secoc_udp_message(secoc_ctx* secoc_obj, uint8_t service){
         if(sock == -1)  return;
 
         set_udp_send_conf(&receiver_addr);
-        if(service == 2 || service == 3 || service == 5 || service == 9){
+        if(service == 2 || service == 3 || service == 5 || service == 10){
                 printf("input value : ");
                 fgets(buf, MAX_PAYLOAD, stdin);
                 if(strlen(buf) == 0)    buf_len = 0;
                 else    buf_len = strlen(buf) - 1;
-        }else if(service == 7 || service == 8){
+        }else if(service == 8 || service == 9){
                 memcpy(buf, secoc_obj->persist.key, KEY_SIZE);
                 buf[KEY_SIZE] = '\0';
                 buf_len = KEY_SIZE;
@@ -55,7 +55,7 @@ void send_secoc_udp_message(secoc_ctx* secoc_obj, uint8_t service){
         }else if(service == 5){
                 parse_uint32(buf, &(secoc_obj->persist.freshness));
                 secoc_store_obj(secoc_obj);
-        }else if(service == 9){
+        }else if(service == 10){
                 secoc_gen_mac(secoc_obj, pdu.payload, pdu.payload_len);
         }
 

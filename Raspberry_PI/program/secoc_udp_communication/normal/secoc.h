@@ -29,6 +29,8 @@ int secoc_store_obj(secoc_ctx* secoc_obj);
 
 void secoc_read_obj(secoc_ctx* secoc_obj);
 
+void secoc_delete_obj(secoc_ctx* secoc_obj);
+
 int secoc_gen_key(secoc_ctx* secoc_obj);
 
 int secoc_gen_mac(secoc_ctx* secoc_obj, const uint8_t payload[MAX_PAYLOAD], uint16_t paylod_len);
