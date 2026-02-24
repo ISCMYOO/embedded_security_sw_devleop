@@ -40,15 +40,13 @@ int store_freshness(TeeSecOC* secoc_obj, const char* alias, const uint32_t fresh
     return 0;
 }
 
-TEEC_Result load_freshness(TeeSecOC* secoc_obj, const char* alias, uint32_t* freshness){
+TEEC_Result load_freshness(TeeSecOC* secoc_obj, const char* alias){
     TEEC_Result res;
     TEEC_Operation op = {0};
 
-    op.paramTypes = TEEC_PARAM_TYPES(TEEC_MEMREF_TEMP_INPUT, TEEC_VALUE_OUTPUT, TEEC_NONE, TEEC_NONE);
+    op.paramTypes = TEEC_PARAM_TYPES(TEEC_MEMREF_TEMP_INPUT, TEEC_NONE, TEEC_NONE, TEEC_NONE);
     op.params[0].tmpref.buffer = (void*)alias;
     op.params[0].tmpref.size = strlen(alias);
-    op.params[1].value.a = 0;
-    op.params[1].value.b = 0;
 
     uint32_t origin;
     res = TEEC_InvokeCommand(&(secoc_obj->session), TA_LOAD_FRESHNESS, &op, &origin);
@@ -57,7 +55,6 @@ TEEC_Result load_freshness(TeeSecOC* secoc_obj, const char* alias, uint32_t* fre
         return res;
     }
 
-    *freshness = op.params[1].value.a;
     return res;
 }
 
@@ -79,14 +76,42 @@ int delete_freshness(TeeSecOC* secoc_obj, const char* alias){
     return 0;
 }
 
-int loadOrGenFreshness(TeeSecOC* secoc_obj, const char* alias, uint32_t* freshness){
-    TEEC_Result res = load_freshness(secoc_obj, alias, freshness);
-    if(res == TEEC_ERROR_ITEM_NOT_FOUND){
-        *freshness = 0;
-        return store_freshness(secoc_obj, alias, *freshness);
+void read_freshness(TeeSecOC* secoc_obj, const char* alias){
+    TEEC_Result res;
+    TEEC_Operation op = {0};
+
+    op.paramTypes = TEEC_PARAM_TYPES(TEEC_MEMREF_TEMP_INPUT, TEEC_NONE, TEEC_NONE, TEEC_NONE);
+    op.params[0].tmpref.buffer = (void*)alias;
+    op.params[0].tmpref.size = strlen(alias);
+
+    uint32_t origin;
+    res = TEEC_InvokeCommand(&(secoc_obj->session), TA_READ_FRESHNESS, &op, &origin);
+    if(res != TEEC_SUCCESS){
+        printf("read_freshness : TEEC_InvokeCommand failed 0x%x origin 0x%x\n", res, origin);
+    }
+}
+
+bool check_freshness(TeeSecOC* secoc_obj, const char* alias, const uint32_t freshness){
+    TEEC_Result res;
+    TEEC_Operation op = {0};
+
+    op.paramTypes = TEEC_PARAM_TYPES(TEEC_MEMREF_TEMP_INPUT, TEEC_VALUE_INPUT, TEEC_VALUE_OUTPUT, TEEC_NONE);
+    op.params[0].tmpref.buffer = (void*)alias;
+    op.params[0].tmpref.size = strlen(alias);
+    op.params[1].value.a = freshness;
+    op.params[1].value.b = 0;
+    op.params[2].value.a = 0;
+    op.params[2].value.b = 0;
+
+    uint32_t origin;
+    res = TEEC_InvokeCommand(&(secoc_obj->session), TA_CHECK_FRESHNESS, &op, &origin);
+    if(res != TEEC_SUCCESS){
+        printf("check_freshness : TEEC_InvokeCommand failed 0x%x origin 0x%x\n", res, origin);
+        return false;
     }
 
-    if(res != TEEC_SUCCESS)
-        return -1;
-    return 0;
+    if(op.params[2].value.a == 1 && op.params[2].value.b == 0)
+        return true;
+
+    return false;
 }

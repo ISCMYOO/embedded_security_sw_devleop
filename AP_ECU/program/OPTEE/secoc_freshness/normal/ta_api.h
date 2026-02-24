@@ -14,10 +14,12 @@ int init(TeeSecOC* secoc_obj);
 
 int store_freshness(TeeSecOC* secoc_obj, const char* alias, const uint32_t freshness);
 
-TEEC_Result load_freshness(TeeSecOC* secoc_obj, const char* alias, uint32_t* freshness);
+TEEC_Result load_freshness(TeeSecOC* secoc_obj, const char* alias);
 
 int delete_freshness(TeeSecOC* secoc_obj, const char* alias);
 
-int loadOrGenFreshness(TeeSecOC* secoc_obj, const char* alias, uint32_t* freshness);
+bool check_freshness(TeeSecOC* secoc_obj, const char* alias, const uint32_t freshness);
+
+void read_freshness(TeeSecOC* secoc_obj, const char* alias);
 
 #endif

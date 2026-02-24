@@ -5,3 +5,5 @@
 #define TA_STORE_FRESHNESS      0
 #define TA_LOAD_FRESHNESS       1
 #define TA_DELETE_FRESHNESS     2
+#define TA_CHECK_FRESHNESS      3
+#define TA_READ_FRESHNESS       4
