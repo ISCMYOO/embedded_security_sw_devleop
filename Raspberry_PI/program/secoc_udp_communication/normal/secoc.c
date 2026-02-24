@@ -66,6 +66,12 @@ void secoc_read_obj(secoc_ctx* secoc_obj){
 	printf("\n\n");
 }
 
+void secoc_delete_obj(secoc_ctx* secoc_obj){
+	secoc_obj->persist.freshness = 0;
+	memset(secoc_obj->persist.key, 0, KEY_SIZE);
+	secoc_obj->data_loaded = false;
+}
+
 int secoc_gen_key(secoc_ctx* secoc_obj){
 	uint8_t key[KEY_SIZE];
 

@@ -1,2 +1,4 @@
 var/
 secoc_udp_sender
+
+*.o
