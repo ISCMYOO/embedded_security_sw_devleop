@@ -136,10 +136,10 @@ EXIT_ERROR:
     return res;
 }
 
-TEE_Result check_freshness(const char* alias, ta_ctx_t* ctx_obj, TEE_Param params[4]){
+TEE_Result check_Freshness(const char* alias, ta_ctx_t* ctx_obj, TEE_Param params[4]){
     TEE_Result res = TEE_SUCCESS;
     if(!ctx_obj->data_loaded){
-        res = load_obj(alias, ctx_obj);
+        res = load_Freshness(alias, ctx_obj);
         if(res != TEE_SUCCESS)
             return res;
     }
@@ -156,7 +156,7 @@ TEE_Result check_freshness(const char* alias, ta_ctx_t* ctx_obj, TEE_Param param
     ctx_obj->persist.freshness = pdu_freshness;
 
     if(pdu_freshness % 10 == 0)
-        res = save_obj(alias, ctx_obj);
+        res = save_Freshness(alias, ctx_obj);
 
     return TEE_SUCCESS;
 }
@@ -188,7 +188,7 @@ TEE_Result TA_InvokeCommandEntryPoint(void *sess_ctx, uint32_t commandID, uint32
         
         goto EXIT;
     }else if(commandID == TA_DELETE_FRESHNESS){
-        TEE_Result res = delete_Freshness(alias);
+        res = delete_Freshness(alias);
         if(res == TEE_SUCCESS){
             TEE_MemFill(ctx, 0, sizeof(ta_ctx_t));
             ctx->data_loaded =false;
@@ -196,7 +196,7 @@ TEE_Result TA_InvokeCommandEntryPoint(void *sess_ctx, uint32_t commandID, uint32
 
         goto EXIT;
     }else if(commandID == TA_CHECK_FRESHNESS){
-        res = check_freshness(alias, ctx, params);
+        res = check_Freshness(alias, ctx, params);
         goto EXIT;
     }else if(commandID == TA_READ_FRESHNESS){
         if(!ctx->data_loaded){

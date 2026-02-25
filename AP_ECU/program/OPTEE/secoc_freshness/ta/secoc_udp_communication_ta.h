@@ -22,4 +22,4 @@ TEE_Result load_Freshness(const char* alias, ta_ctx_t* ctx_obj);
 
 TEE_Result delete_Freshness(const char* alias);
 
-TEE_Result check_freshness(const char* alias, ta_ctx_t* ctx_obj, TEE_Param params[4]);
+TEE_Result check_Freshness(const char* alias, ta_ctx_t* ctx_obj, TEE_Param params[4]);

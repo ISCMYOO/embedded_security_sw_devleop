@@ -12,25 +12,17 @@ int secoc_verify(TeeSecOC* secoc_obj, secoc_pdu_t* pdu, const char* alias){
 }
 
 int secoc_load_freshness(TeeSecOC* secoc_obj, const char* alias){
-    // load freshness from RPMB(eMMC)
-    if(load_freshness(secoc_obj, alias) == -1)
-        return -1;
-    return 0;
+    return load_freshness(secoc_obj, alias);
 }
 
-int secoc_read_freshness(TeeSecOC* secoc_obj, const char* alias){
+void secoc_read_freshness(TeeSecOC* secoc_obj, const char* alias){
     read_freshness(secoc_obj, alias);
-    return 0;
 }
 
 int secoc_store_freshness(TeeSecOC* secoc_obj, const char* alias, const uint32_t freshness_in){
-    if(store_freshness(secoc_obj, alias, freshness_in) == -1)
-        return -1;
-    return 0;
+    return store_freshness(secoc_obj, alias, freshness_in);
 }
 
 int secoc_delete_freshness(TeeSecOC* secoc_obj, const char* alias){
-    if(delete_freshness(secoc_obj, alias) == -1)
-        return -1;
-    return 0;
+    delete_freshness(secoc_obj, alias);
 }

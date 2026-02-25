@@ -47,26 +47,28 @@ int main(){
                 printf("[DROP] invalid length\n");
             }else{
                 printf("[SecOC OK]\n");
-                if(pdu->service == 2){
+                if(pdu->service == CMD_SEND_MESSAGE){
                     printf("message : %.*s\n", pdu->payload_len, pdu->payload);
-                }else if(pdu->service == 1){
+                }else if(pdu->service == CMD_RESET_FRESHNESS){
                     uint32_t init_freshness = 0;
                     if(secoc_store_freshness(&secoc_obj, alias, init_freshness) == -1){
                         printf("Faileed init freshness from TA\n");
                         return -1;
                     }
                     secoc_read_freshness(&secoc_obj, alias);
-                }else if(pdu->service == 5){
+                }else if(pdu->service == CMD_SET_FRESHNESS){
                     uint32_t set_freshness = str_to_u32(pdu->payload);
                     if(secoc_store_freshness(&secoc_obj, alias, set_freshness) == -1){
                         printf("Failed store freshness from TA\n");
                         return -1;
                     }
                     secoc_read_freshness(&secoc_obj, alias);
-                }else if(pdu->service == 4){
+                }else if(pdu->service == CMD_READ_FRESHNESS){
                     secoc_read_freshness(&secoc_obj, alias);
-                }else if(pdu->service == 6){
+                }else if(pdu->service == CMD_DELETE_FRESHNESS){
                     secoc_delete_freshness(&secoc_obj, alias);
+                }else if(pdu->service == CMD_LOAD_FRESHNESS){
+                    secoc_load_freshness(&secoc_obj, alias);
                 }else{
                     printf("Service Not Ready\n");
                 }
