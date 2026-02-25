@@ -2,9 +2,9 @@ CC = arm-ostl-linux-gnueabi-gcc
 
 SYSROOT = /home/iscmyoo/project/mobility_security/optee_stm32/Developer_Package/SDK/sysroots/cortexa7t2hf-neon-vfpv4-ostl-linux-gnueabi
 
-TARGET = secoc_udp_receiver_optee
+TARGET = secoc_udp_receiver_authtag_optee
 
-SRCS = secoc_udp_receiver_optee.c \
+SRCS = secoc_udp_receiver_authtag_optee.c \
        secoc.c \
        udpcom.c \
        ta_api.c \
@@ -17,7 +17,8 @@ CFLAGS = -mthumb \
          -mcpu=cortex-a7 \
          -D_TIME_BITS=64 \
          -D_FILE_OFFSET_BITS=64 \
-         --sysroot=$(SYSROOT)
+         --sysroot=$(SYSROOT) \
+         -I../include
 
 
 LDFLAGS = -lteec
