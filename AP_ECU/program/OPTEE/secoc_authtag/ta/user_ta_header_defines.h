@@ -5,4 +5,4 @@
 #define TA_STACK_SIZE   (2 * 1024)
 #define TA_DATA_SIZE    (32 * 1024)
 #define TA_VERSION      "1.0"
-#define TA_DESCRIPTIOM  "ISCMYOO SecOC Freshness example"
+#define TA_DESCRIPTIOM  "ISCMYOO SecOC AuthTag(MAC) example"
