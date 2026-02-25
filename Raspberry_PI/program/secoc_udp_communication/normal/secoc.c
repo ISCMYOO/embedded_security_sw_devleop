@@ -128,7 +128,8 @@ void secoc_protect(secoc_ctx* secoc_obj, secoc_pdu_t* pdu){
 	// calc mac (not now)
 	memset(pdu->mac, 0xAA, SECOC_MAC_SIZE);
 
-	secoc_store_obj(secoc_obj);
+	if(secoc_obj->persist.freshness % 10 == 0)
+		secoc_store_obj(secoc_obj);
 }
 
 void secoc_replay(secoc_ctx* secoc_obj, secoc_pdu_t* pdu){
