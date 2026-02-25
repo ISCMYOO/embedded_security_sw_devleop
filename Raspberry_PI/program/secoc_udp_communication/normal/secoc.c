@@ -27,9 +27,6 @@ int secoc_load_obj(secoc_ctx* secoc_obj){
 
 	secoc_obj->data_loaded = true;
 
-	printf("[OBJECT LOAD]\n");
-	secoc_read_obj(secoc_obj);
-
 	return 0;
 }
 
