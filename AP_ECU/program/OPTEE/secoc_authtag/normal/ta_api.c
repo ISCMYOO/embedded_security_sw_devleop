@@ -69,7 +69,7 @@ int delete_object(TeeSecOC* secoc_obj, const char* alias){
     uint32_t origin;
     res = TEEC_InvokeCommand(&(secoc_obj->session), TA_DELETE_OBJECT, &op, &origin);
     if(res != TEEC_SUCCESS){
-        printf("delete_freshness : TEEC_InvokeCommand failed 0x%x origin 0x%x\n", res, origin);
+        printf("delete_object : TEEC_InvokeCommand failed 0x%x origin 0x%x\n", res, origin);
         return -1;
     }
 
