@@ -67,6 +67,7 @@ void secoc_delete_obj(secoc_ctx* secoc_obj){
 	secoc_obj->persist.freshness = 0;
 	memset(secoc_obj->persist.key, 0, KEY_SIZE);
 	secoc_obj->data_loaded = false;
+	secoc_store_obj(secoc_obj);
 }
 
 int secoc_gen_key(secoc_ctx* secoc_obj){
