@@ -23,6 +23,8 @@ TEE_Result load_obj(const char* alias, ta_ctx_t* ctx_obj);
 
 TEE_Result delete_obj(const char* alias);
 
+TEE_Result check_freshness(const char* alias, ta_ctx_t* ctx_obj, TEE_Param params[4]);
+
 bool setOperation(TEE_OperationHandle* opHandle, TEE_OperationMode opMode, const uint8_t* key);
 
 bool gen_aes_mac(TEE_Param params[4], TEE_OperationHandle op);
