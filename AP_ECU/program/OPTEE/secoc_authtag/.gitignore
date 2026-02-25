@@ -9,4 +9,4 @@ include/*
 !include/common.h
 !include/common.c
 
-normal/secoc_udp_receiver_optee
+normal/secoc_udp_receiver_authtag_optee
