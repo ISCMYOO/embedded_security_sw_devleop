@@ -47,31 +47,35 @@ int main(){
                 printf("[DROP] invalid length : %d\n", pdu->payload_len);
             }else{
                 printf("[SecOC OK]\n");
-                if(pdu->service == 2){
+                if(pdu->service == CMD_SEND_MESSAGE){
                     printf("message : %.*s\n", pdu->payload_len, pdu->payload);
-                }else if(pdu->service == 1){
+                }else if(pdu->service == CMD_RESET_FRESHNESS){
                     uint32_t init_freshness = 0;
                     if(secoc_store_freshness(&secoc_obj, alias, init_freshness) == -1){
                         printf("Faileed init freshness from TA\n");
                         return -1;
                     }
                     secoc_read_freshness(&secoc_obj, alias);
-                }else if(pdu->service == 5){ // Set Freshness
+                }else if(pdu->service == CMD_SET_FRESHNESS){
                     uint32_t set_freshness = str_to_u32(pdu->payload);
                     if(secoc_store_freshness(&secoc_obj, alias, set_freshness) == -1){
                         printf("Failed store freshness from TA\n");
                         return -1;
                     }
                     secoc_read_freshness(&secoc_obj, alias);
-                }else if(pdu->service == 4){ // Read Freshness
+                }else if(pdu->service == CMD_READ_FRESHNESS){
                     secoc_read_freshness(&secoc_obj, alias);
-                }else if(pdu->service == 6){ // Delete Object
+                }else if(pdu->service == CMD_LOAD_FRESHNESS){
+                    secoc_load_freshness(&secoc_obj, alias);
+                }else if(pdu->service == CMD_DELETE_OBJECT){
                     secoc_delete_object(&secoc_obj, alias);
-                }else if(pdu->service == 7){ // Read Key
+                }else if(pdu->service == CMD_READ_KEY){
                     secoc_read_key(&secoc_obj, alias);
-                }else if(pdu->service == 8 || pdu->service == 9){ // Sync Key
+                }else if(pdu->service == CMD_LOAD_KEY){
+                    secoc_load_key(&secoc_obj, alias);
+                }else if(pdu->service == CMD_SYNC_KEY || pdu->service == CMD_GEN_SYNC_KEY){
                     secoc_store_key(&secoc_obj, alias, pdu->payload, pdu->payload_len);
-                }else if(pdu->service == 10){
+                }else if(pdu->service == CMD_GEN_MAC){
                     secoc_gen_aes_mac(&secoc_obj, pdu, alias);
                 }else{
                     printf("Not Supported Service\n");

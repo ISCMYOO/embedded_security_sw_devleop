@@ -32,9 +32,8 @@ int secoc_load_freshness(TeeSecOC* secoc_obj, const char* alias){
     return load_freshness(secoc_obj, alias);
 }
 
-int secoc_read_freshness(TeeSecOC* secoc_obj, const char* alias){
+void secoc_read_freshness(TeeSecOC* secoc_obj, const char* alias){
     read_freshness(secoc_obj, alias);
-    return 0;
 }
 
 int secoc_store_freshness(TeeSecOC* secoc_obj, const char* alias, const uint32_t freshness_in){

@@ -21,7 +21,7 @@ int secoc_store_key(TeeSecOC* secoc_obj, const char* alias, const uint8_t* key, 
 
 int secoc_load_freshness(TeeSecOC* secoc_obj, const char* alias);
 
-int secoc_read_freshness(TeeSecOC* secoc_obj, const char* alias);
+void secoc_read_freshness(TeeSecOC* secoc_obj, const char* alias);
 
 int secoc_store_freshness(TeeSecOC* secoc_obj, const char* alias, const uint32_t freshness_in);
 
