@@ -47,7 +47,10 @@ void send_secoc_udp_message(secoc_ctx* secoc_obj, uint8_t service){
         pdu.service = service;
         memcpy(pdu.payload, buf, pdu.payload_len);
 
-        secoc_protect(secoc_obj, &pdu);
+        if(service == CMD_REPLAY_PACKET)
+                secoc_replay(secoc_obj, &pdu);
+        else
+                secoc_protect(secoc_obj, &pdu);
 
         sendto(sock, &pdu, sizeof(uint32_t) + sizeof(uint8_t) + sizeof(uint32_t) + pdu.payload_len + SECOC_MAC_SIZE, 0, (struct sockaddr*)&receiver_addr, sizeof(receiver_addr));
         if(service == CMD_SEND_MESSAGE || service == CMD_REPLAY_PACKET){
@@ -58,35 +61,6 @@ void send_secoc_udp_message(secoc_ctx* secoc_obj, uint8_t service){
         }else if(service == CMD_GEN_MAC){
                 secoc_gen_mac(secoc_obj, pdu.payload, pdu.payload_len);
         }
-
-        close(sock);
-}
-
-void send_secoc_udp_replay(secoc_ctx* secoc_obj){
-        int sock;
-        struct sockaddr_in receiver_addr;
-        secoc_pdu_t pdu;
-        char buf[MAX_PAYLOAD];
-
-        memset(buf, 0, MAX_PAYLOAD);
-
-        sock = get_udp_sock();
-        if(sock == -1)  return;
-
-        set_udp_send_conf(&receiver_addr);
-        
-        printf("input value : ");
-        fgets(buf, MAX_PAYLOAD, stdin);
-
-        memset(&pdu, 0, sizeof(pdu));
-        pdu.payload_len = strlen(buf);
-        pdu.service = 2;
-        memcpy(pdu.payload, buf, pdu.payload_len);
-
-        secoc_replay(secoc_obj, &pdu);
-
-        sendto(sock, &pdu, sizeof(uint32_t) + sizeof(uint8_t) + sizeof(uint16_t) + pdu.payload_len + SECOC_MAC_SIZE, 0, (struct sockaddr*)&receiver_addr, sizeof(receiver_addr));
-        printf("[Sender] Sent: %s\n", buf);
 
         close(sock);
 }

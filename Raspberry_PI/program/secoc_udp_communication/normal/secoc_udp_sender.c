@@ -38,7 +38,7 @@ int main(){
 			send_secoc_udp_message(&secoc_obj, menu_num);
 			printf("\n\n");
 		}else if(menu_num == CMD_REPLAY_PACKET){
-			send_secoc_udp_replay(&secoc_obj);
+			send_secoc_udp_message(&secoc_obj, menu_num);
 		}else if(menu_num == CMD_READ_FRESHNESS){
 			send_secoc_udp_message(&secoc_obj, menu_num);
 			secoc_read_obj(&secoc_obj);

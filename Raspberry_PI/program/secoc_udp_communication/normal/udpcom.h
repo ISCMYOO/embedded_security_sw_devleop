@@ -11,5 +11,3 @@ int get_udp_sock();
 void set_udp_send_conf(struct sockaddr_in* receiver_addr);
 
 void send_secoc_udp_message(secoc_ctx* secoc_obj, uint8_t service);
-
-void send_secoc_udp_replay(secoc_ctx* secoc_obj);
