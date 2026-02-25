@@ -136,8 +136,35 @@ EXIT_ERROR:
     return res;
 }
 
+TEE_Result check_freshness(const char* alias, ta_ctx_t* ctx_obj, TEE_Param params[4]){
+    TEE_Result res = TEE_SUCCESS;
+    if(!ctx_obj->data_loaded){
+        res = load_obj(alias, ctx_obj);
+        if(res != TEE_SUCCESS)
+            return res;
+    }
+
+    uint32_t pdu_freshness = params[1].value.a;
+
+    if(pdu_freshness < ctx_obj->persist.freshness){
+        IMSG("SECOC verify failed : Replay Attack");
+        IMSG("sender freshness : %d / receiver freshness : %d", pdu_freshness, ctx_obj->persist.freshness);
+        return TEE_SUCCESS;
+    }
+
+    params[2].value.a = 1;
+    ctx_obj->persist.freshness = pdu_freshness;
+
+    if(pdu_freshness % 10 == 0)
+        res = save_obj(alias, ctx_obj);
+
+    return TEE_SUCCESS;
+}
+
 TEE_Result TA_InvokeCommandEntryPoint(void *sess_ctx, uint32_t commandID, uint32_t __maybe_unused paramTypes, TEE_Param params[4]){
     ta_ctx_t* ctx = (ta_ctx_t*)sess_ctx;
+
+    TEE_Result res;
 
     char* alias = TEE_Malloc(params[0].memref.size + 1, 0);
     TEE_MemMove(alias, params[0].memref.buffer, params[0].memref.size);
@@ -149,76 +176,43 @@ TEE_Result TA_InvokeCommandEntryPoint(void *sess_ctx, uint32_t commandID, uint32
 
         ctx->persist.freshness = freshness;
 
-        TEE_Result res = save_Freshness(alias, ctx);
-        TEE_Free(alias);
-
+        res = save_Freshness(alias, ctx);
         if(res != TEE_SUCCESS)  ctx->persist.freshness = freshness_tmp;
         ctx->data_loaded = true;
 
-        return res;
+        goto EXIT;
     }else if(commandID == TA_LOAD_FRESHNESS){
-        TEE_Result res = load_Freshness(alias, ctx);
-        TEE_Free(alias);
-
+        res = load_Freshness(alias, ctx);
         if(res == TEE_SUCCESS)
             ctx->data_loaded = true;
         
-        return res;
+        goto EXIT;
     }else if(commandID == TA_DELETE_FRESHNESS){
         TEE_Result res = delete_Freshness(alias);
-        TEE_Free(alias);
-
         if(res == TEE_SUCCESS){
             TEE_MemFill(ctx, 0, sizeof(ta_ctx_t));
             ctx->data_loaded =false;
         }
 
-        return res;
+        goto EXIT;
     }else if(commandID == TA_CHECK_FRESHNESS){
-        TEE_Result res;
-        if(!ctx->data_loaded){
-            res = load_Freshness(alias, ctx);
-            if(res != TEE_SUCCESS){
-                TEE_Free(alias);
-                return res; 
-            }
-        }
-
-        uint32_t pdu_freshness = params[1].value.a;
-
-        if(pdu_freshness < ctx->persist.freshness){
-            TEE_Free(alias);
-            IMSG("SECOC verify failed : Replay Attack");
-            IMSG("sender freshness : %d / receiver freshness : %d", pdu_freshness, ctx->persist.freshness);
-            return TEE_SUCCESS;
-        }
-
-        params[2].value.a = 1;
-        ctx->persist.freshness = pdu_freshness;
-
-        if(pdu_freshness % 10 == 0){
-            res = save_Freshness(alias, ctx);
-            if(res != TEE_SUCCESS){
-                TEE_Free(alias);
-                return res;
-            }
-        }
-
-        TEE_Free(alias);
-        return TEE_SUCCESS;
+        res = check_freshness(alias, ctx, params);
+        goto EXIT;
     }else if(commandID == TA_READ_FRESHNESS){
         if(!ctx->data_loaded){
-            TEE_Result res = load_Freshness(alias, ctx);
-            if(res != TEE_SUCCESS){
-                TEE_Free(alias);
-                return res;
-            }
+            res = load_Freshness(alias, ctx);
+            if(res != TEE_SUCCESS)
+                goto EXIT;
         }
         IMSG("ctx freshness : %d", ctx->persist.freshness);
-        TEE_Free(alias);
-
-        return TEE_SUCCESS;
+        
+        res = TEE_SUCCESS;
+        goto EXIT;
     }
 
     return TEE_ERROR_BAD_PARAMETERS;
+
+EXIT:
+    TEE_Free(alias);
+    return res;
 }
