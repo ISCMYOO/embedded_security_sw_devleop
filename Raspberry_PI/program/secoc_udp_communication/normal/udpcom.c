@@ -31,12 +31,12 @@ void send_secoc_udp_message(secoc_ctx* secoc_obj, uint8_t service){
         if(sock == -1)  return;
 
         set_udp_send_conf(&receiver_addr);
-        if(service == 2 || service == 3 || service == 5 || service == 10){
+        if(service == CMD_SEND_MESSAGE || service == CMD_REPLAY_PACKET || service == CMD_SET_FRESHNESS || service == CMD_GEN_MAC){
                 printf("input value : ");
                 fgets(buf, MAX_PAYLOAD, stdin);
                 if(strlen(buf) == 0)    buf_len = 0;
                 else    buf_len = strlen(buf) - 1;
-        }else if(service == 8 || service == 9){
+        }else if(service == CMD_SYNC_KEY || service == CMD_GEN_SYNC_KEY){
                 memcpy(buf, secoc_obj->persist.key, KEY_SIZE);
                 buf[KEY_SIZE] = '\0';
                 buf_len = KEY_SIZE;
@@ -50,12 +50,12 @@ void send_secoc_udp_message(secoc_ctx* secoc_obj, uint8_t service){
         secoc_protect(secoc_obj, &pdu);
 
         sendto(sock, &pdu, sizeof(uint32_t) + sizeof(uint8_t) + sizeof(uint32_t) + pdu.payload_len + SECOC_MAC_SIZE, 0, (struct sockaddr*)&receiver_addr, sizeof(receiver_addr));
-        if(service == 2 || service == 3){
+        if(service == CMD_SEND_MESSAGE || service == CMD_REPLAY_PACKET){
                 printf("[Sender] Sent: %s\n", buf);
-        }else if(service == 5){
+        }else if(service == CMD_SET_FRESHNESS){
                 parse_uint32(buf, &(secoc_obj->persist.freshness));
                 secoc_store_obj(secoc_obj);
-        }else if(service == 10){
+        }else if(service == CMD_GEN_MAC){
                 secoc_gen_mac(secoc_obj, pdu.payload, pdu.payload_len);
         }
 
